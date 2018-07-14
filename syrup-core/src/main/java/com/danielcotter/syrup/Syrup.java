@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 
@@ -19,12 +18,12 @@ public class Syrup {
 	private ObjectMapper objectMapper = new ObjectMapper();
 	private Properties properties = new Properties();
 	private String filepath;
+	private Field idField;
 
 	public Object getById(String id) {
 		Object myReturn = null;
 
 		try {
-			loadProperties();
 			String value = (String) properties.getProperty(id);
 
 			if (value != null && !value.isEmpty())
@@ -41,17 +40,18 @@ public class Syrup {
 		Object myReturn = null;
 
 		try {
-			loadProperties();
-			Set<Entry<Object, Object>> entries = properties.entrySet();
+			Set<Object> entries = properties.keySet();
 
-			for (Entry<Object, Object> entry : entries) {
-				Object retrievedObject = getById(entry.getKey().toString());
+			for (Object key : entries) {
+				Object persistedObject = getById(key.toString());
 
 				Field thisField = myClass.getDeclaredField(fieldName);
 				thisField.setAccessible(true);
 
-				if (thisField.get(retrievedObject).equals(comparator))
-					return retrievedObject;
+				if (thisField.get(persistedObject).equals(comparator)) {
+					myReturn = persistedObject;
+					break;
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -63,12 +63,7 @@ public class Syrup {
 
 	public Boolean save(Object object) {
 		try {
-			loadProperties();
 			String propertiesId = new Integer(properties.keySet().size()).toString();
-			Field idField = findAnnotation(javax.persistence.Id.class);
-
-			if (idField == null)
-				throw new Exception("Class missing @Id");
 
 			Field thisIdField = myClass.getDeclaredField(idField.getName());
 			thisIdField.setAccessible(true);
@@ -116,12 +111,6 @@ public class Syrup {
 
 	public Boolean update(Object object) {
 		try {
-			loadProperties();
-			Field idField = findAnnotation(javax.persistence.Id.class);
-
-			if (idField == null)
-				throw new Exception("Class missing @Id");
-
 			Field thisIdField = object.getClass().getDeclaredField(idField.getName());
 			thisIdField.setAccessible(true);
 
@@ -157,11 +146,19 @@ public class Syrup {
 	private Field findAnnotation(Class<? extends Annotation> needle) {
 		Field myField = null;
 
-		for (Field thisField : myClass.getDeclaredFields())
-			if (thisField.isAnnotationPresent(needle)) {
-				myField = thisField;
-				break;
-			}
+		try {
+			for (Field thisField : myClass.getDeclaredFields())
+				if (thisField.isAnnotationPresent(needle)) {
+					myField = thisField;
+					break;
+				}
+
+			if (myField == null)
+				throw new Exception("@Id field is missing");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 
 		return myField;
 	}
@@ -176,7 +173,7 @@ public class Syrup {
 	private void saveProperties() throws Exception {
 		OutputStream outputStream = new FileOutputStream(filepath);
 
-		properties.store(outputStream, "syrup");
+		properties.store(outputStream, "syrup-orm");
 		outputStream.close();
 	}
 
@@ -196,5 +193,8 @@ public class Syrup {
 
 		if (!file.exists() && !file.createNewFile())
 			throw new Exception("Unable to create file");
+
+		loadProperties();
+		idField = findAnnotation(javax.persistence.Id.class);
 	}
 }
