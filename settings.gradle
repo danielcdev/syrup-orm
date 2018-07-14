@@ -1,0 +1,2 @@
+rootProject.name = 'syrup-orm'
+include 'syrup-core'
