@@ -13,7 +13,7 @@ import com.danielcotter.syrup.test.model.LongModel;
 
 public class IdTest {
 
-	private SyrupFactory factory = new SyrupFactory();
+	private static SyrupFactory factory;
 	private LongModel longModel = new LongModel(1l);
 	private DoubleModel doubleModel = new DoubleModel(3.14d);
 	private FloatModel floatModel = new FloatModel(14.3f);
@@ -22,11 +22,13 @@ public class IdTest {
 
 	@BeforeClass
 	public static void beforeTests() {
-		new SyrupFactory().resetSyrup(LongModel.class);
-		new SyrupFactory().resetSyrup(DoubleModel.class);
-		new SyrupFactory().resetSyrup(FloatModel.class);
-		new SyrupFactory().resetSyrup(BooleanModel.class);
-		new SyrupFactory().resetSyrup(ByteModel.class);
+		factory = new SyrupFactory();
+
+		factory.resetSyrup(LongModel.class);
+		factory.resetSyrup(DoubleModel.class);
+		factory.resetSyrup(FloatModel.class);
+		factory.resetSyrup(BooleanModel.class);
+		factory.resetSyrup(ByteModel.class);
 	}
 
 	@Test
