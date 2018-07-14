@@ -64,32 +64,28 @@ public class Syrup {
 	public Boolean save(Object object) {
 		try {
 			String propertiesId = new Integer(properties.keySet().size()).toString();
-
-			Field thisIdField = myClass.getDeclaredField(idField.getName());
-			thisIdField.setAccessible(true);
-
-			Object value = thisIdField.get(object);
+			Object value = idField.get(object);
 
 			if (value == null) {
-				switch (thisIdField.getType().getSimpleName()) {
+				switch (idField.getType().getSimpleName()) {
 				case "String":
-					thisIdField.set(object, propertiesId);
+					idField.set(object, propertiesId);
 					break;
 
 				case "Integer":
-					thisIdField.set(object, new Integer(propertiesId));
+					idField.set(object, new Integer(propertiesId));
 					break;
 
 				case "Long":
-					thisIdField.set(object, new Long(propertiesId));
+					idField.set(object, new Long(propertiesId));
 					break;
 
 				case "Double":
-					thisIdField.set(object, new Double(propertiesId));
+					idField.set(object, new Double(propertiesId));
 					break;
 
 				case "Float":
-					thisIdField.set(object, new Float(propertiesId));
+					idField.set(object, new Float(propertiesId));
 					break;
 				}
 			} else if (properties.get(value.toString()) != null) {
@@ -111,10 +107,7 @@ public class Syrup {
 
 	public Boolean update(Object object) {
 		try {
-			Field thisIdField = object.getClass().getDeclaredField(idField.getName());
-			thisIdField.setAccessible(true);
-
-			Object value = thisIdField.get(object);
+			Object value = idField.get(object);
 
 			if (properties.get(value.toString()) == null)
 				throw new Exception("Id does not exist");
@@ -196,6 +189,8 @@ public class Syrup {
 			throw new Exception("Unable to create file");
 
 		loadProperties();
+
 		idField = findAnnotation(javax.persistence.Id.class);
+		idField.setAccessible(true);
 	}
 }

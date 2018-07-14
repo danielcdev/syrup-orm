@@ -13,12 +13,15 @@ import com.danielcotter.syrup.test.model.TestModel;
 public class RunThroughTest {
 
 	private static TestModel generatedIdModel;
-	private SyrupFactory factory = new SyrupFactory();
+	private static SyrupFactory factory;
 	private TestModel testModel = new TestModel(1337, "myFakeUsername", "myFakePassword");
 
 	@BeforeClass
 	public static void beforeTests() {
-		new SyrupFactory().resetSyrup(TestModel.class);
+		factory = new SyrupFactory();
+
+		factory.resetSyrup(TestModel.class);
+		generatedIdModel = new TestModel(null, "generatedUsername", "generatedPassword");
 	}
 
 	@Test
@@ -48,8 +51,6 @@ public class RunThroughTest {
 
 	@Test
 	public void testEgeneratesId() {
-		generatedIdModel = new TestModel(null, "generatedUsername", "generatedPassword");
-
 		Assert.assertEquals(true, factory.getSyrup(TestModel.class).save(generatedIdModel));
 	}
 
