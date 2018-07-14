@@ -179,13 +179,14 @@ public class Syrup {
 
 	/**
 	 * @param myClass
+	 * @param directory
 	 * @throws Exception
 	 */
-	public Syrup(Class<? extends Object> myClass) throws Exception {
+	public Syrup(Class<? extends Object> myClass, String directory) throws Exception {
 		this.myClass = myClass;
-		filepath = System.getProperty("user.home") + File.separator + "syrup" + File.separator + myClass.getName();
+		filepath = directory + myClass.getName();
 
-		File directories = new File(System.getProperty("user.home") + File.separator + "syrup" + File.separator);
+		File directories = new File(directory);
 		File file = new File(filepath);
 
 		if (!directories.exists() && !directories.mkdirs())
