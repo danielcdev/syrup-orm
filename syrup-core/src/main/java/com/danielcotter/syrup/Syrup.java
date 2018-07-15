@@ -93,6 +93,21 @@ public class Syrup {
 		return true;
 	}
 
+	public Boolean delete(Object object) {
+		try {
+			ObjectMetadata objectMetadata = new ObjectMetadata(object, properties, null, null);
+			annotationDigester.delete(objectMetadata);
+
+			properties.remove(objectMetadata.getId());
+			saveProperties();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+
+		return true;
+	}
+
 	protected Boolean deleteFile() {
 		try {
 			File file = new File(filepath);

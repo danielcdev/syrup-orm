@@ -59,4 +59,14 @@ public class IdAnnotationHandler implements AnnotationHandler {
 
 		objectMetadata.setId(idFieldValue.toString());
 	}
+
+	@Override
+	public void delete(ObjectMetadata objectMetadata) throws Exception {
+		Object idFieldValue = objectMetadata.getField().get(objectMetadata.getObject());
+
+		if (objectMetadata.getProperties().get(idFieldValue.toString()) == null)
+			throw new Exception("Object does not exist");
+
+		objectMetadata.setId(idFieldValue.toString());
+	}
 }

@@ -43,6 +43,16 @@ public class AnnotationDigester implements AnnotationHandler {
 				annotationHandlerFactory.getAnnotationHandler(entry.getKey()).update(objectMetadata);
 			}
 	}
+	
+	@Override
+	public void delete(ObjectMetadata objectMetadata) throws Exception {
+		for (Map.Entry<Annotation, List<Field>> entry : fieldsAndAnnotations.entrySet())
+			for (Field thisField : entry.getValue()) {
+				objectMetadata.setField(thisField);
+
+				annotationHandlerFactory.getAnnotationHandler(entry.getKey()).delete(objectMetadata);
+			}
+	}
 
 	private void addToMap(Field thisField, Annotation thisAnnotation) {
 		if (!fieldsAndAnnotations.containsKey(thisAnnotation))

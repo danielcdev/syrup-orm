@@ -7,4 +7,6 @@ public interface AnnotationHandler {
 	public void save(ObjectMetadata objectMetadata) throws Exception;
 
 	public void update(ObjectMetadata objectMetadata) throws Exception;
+	
+	public void delete(ObjectMetadata objectMetadata) throws Exception;
 }
