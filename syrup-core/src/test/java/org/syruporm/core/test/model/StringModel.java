@@ -1,4 +1,4 @@
-package com.danielcotter.syrup.test.model;
+package org.syruporm.core.test.model;
 
 import javax.persistence.Id;
 

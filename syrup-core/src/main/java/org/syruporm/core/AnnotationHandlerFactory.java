@@ -1,4 +1,4 @@
-package com.danielcotter.syrup;
+package org.syruporm.core;
 
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class AnnotationHandlerFactory {
 
-	private static final String packageName = "com.danielcotter.syrup.annotationhandler.";
+	private static final String packageName = "org.syruporm.annotationhandler.";
 	private static final String classSuffix = "AnnotationHandler";
 	private static AnnotationHandlerFactory instance;
 	private Map<Annotation, AnnotationHandler> annotationHandlers = new HashMap<>();

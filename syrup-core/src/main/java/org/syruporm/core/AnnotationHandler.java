@@ -1,4 +1,4 @@
-package com.danielcotter.syrup;
+package org.syruporm.core;
 
 public interface AnnotationHandler {
 

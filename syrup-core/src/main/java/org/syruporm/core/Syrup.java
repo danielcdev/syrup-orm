@@ -1,4 +1,4 @@
-package com.danielcotter.syrup;
+package org.syruporm.core;
 
 import java.io.File;
 import java.io.FileInputStream;

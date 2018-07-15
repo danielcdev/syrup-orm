@@ -1,13 +1,12 @@
-package com.danielcotter.syrup.test;
+package org.syruporm.core.test;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
-
-import com.danielcotter.syrup.SyrupFactory;
-import com.danielcotter.syrup.test.model.TestModel;
+import org.syruporm.core.SyrupFactory;
+import org.syruporm.core.test.model.TestModel;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class RunThroughTest {

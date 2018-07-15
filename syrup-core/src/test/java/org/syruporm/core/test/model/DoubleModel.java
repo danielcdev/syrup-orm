@@ -1,27 +1,27 @@
-package com.danielcotter.syrup.test.model;
+package org.syruporm.core.test.model;
 
 import javax.persistence.Id;
 
-public class LongModel {
+public class DoubleModel {
 
 	@Id
-	private Long id;
+	private Double id;
 
-	public LongModel() {
+	public DoubleModel() {
 
 	}
 
 	/**
 	 * @param id
 	 */
-	public LongModel(Long id) {
+	public DoubleModel(Double id) {
 		this.id = id;
 	}
 
 	/**
 	 * @return the id
 	 */
-	public Long getId() {
+	public Double getId() {
 		return id;
 	}
 
@@ -29,7 +29,7 @@ public class LongModel {
 	 * @param id
 	 *            the id to set
 	 */
-	public void setId(Long id) {
+	public void setId(Double id) {
 		this.id = id;
 	}
 
@@ -57,9 +57,9 @@ public class LongModel {
 			return true;
 		if (obj == null)
 			return false;
-		if (!(obj instanceof LongModel))
+		if (!(obj instanceof DoubleModel))
 			return false;
-		LongModel other = (LongModel) obj;
+		DoubleModel other = (DoubleModel) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -75,6 +75,6 @@ public class LongModel {
 	 */
 	@Override
 	public String toString() {
-		return "LongModel [id=" + id + "]";
+		return "DoubleModel [id=" + id + "]";
 	}
 }

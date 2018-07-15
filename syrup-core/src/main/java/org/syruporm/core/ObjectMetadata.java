@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.danielcotter.syrup;
+package org.syruporm.core;
 
 import java.lang.reflect.Field;
 import java.util.Properties;
