@@ -93,4 +93,21 @@ public class RunThroughTest {
 
 		Assert.assertEquals(false, factory.getSyrup(TestModel.class).update(newModel));
 	}
+
+	@Test
+	public void testLobjectDeletion() {
+		Assert.assertEquals(true, factory.getSyrup(TestModel.class).delete(generatedIdModel));
+	}
+
+	@Test
+	public void testMdeleteIsFactual() {
+		TestModel nonexistentModel = (TestModel) factory.getSyrup(TestModel.class).getById("1");
+
+		Assert.assertNull(nonexistentModel);
+	}
+
+	@Test
+	public void testNdeletionNotExists() {
+		Assert.assertEquals(false, factory.getSyrup(TestModel.class).delete(generatedIdModel));
+	}
 }
