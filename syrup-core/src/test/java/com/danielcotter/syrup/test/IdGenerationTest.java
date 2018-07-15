@@ -5,6 +5,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.danielcotter.syrup.SyrupFactory;
+import com.danielcotter.syrup.test.model.ByteModel;
 import com.danielcotter.syrup.test.model.DoubleModel;
 import com.danielcotter.syrup.test.model.FloatModel;
 import com.danielcotter.syrup.test.model.LongModel;
@@ -17,6 +18,7 @@ public class IdGenerationTest {
 	private DoubleModel doubleModel = new DoubleModel(null);
 	private FloatModel floatModel = new FloatModel(null);
 	private StringModel stringModel = new StringModel(null);
+	private ByteModel byteModel = new ByteModel(null);
 
 	@BeforeClass
 	public static void beforeTests() {
@@ -26,6 +28,7 @@ public class IdGenerationTest {
 		factory.resetSyrup(DoubleModel.class);
 		factory.resetSyrup(FloatModel.class);
 		factory.resetSyrup(StringModel.class);
+		factory.resetSyrup(ByteModel.class);
 	}
 
 	@Test
@@ -58,5 +61,13 @@ public class IdGenerationTest {
 
 		StringModel persistedStringModel = (StringModel) factory.getSyrup(StringModel.class).getById("0");
 		Assert.assertEquals(stringModel, persistedStringModel);
+	}
+
+	@Test
+	public void byteModel() {
+		Assert.assertEquals(true, factory.getSyrup(ByteModel.class).save(byteModel));
+
+		ByteModel persistedByteModel = (ByteModel) factory.getSyrup(ByteModel.class).getById("0");
+		Assert.assertEquals(byteModel, persistedByteModel);
 	}
 }

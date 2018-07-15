@@ -36,6 +36,10 @@ public class IdAnnotationHandler implements AnnotationHandler {
 			case "Float":
 				objectMetadata.getField().set(objectMetadata.getObject(), new Float(propertiesId));
 				break;
+
+			case "Byte":
+				objectMetadata.getField().set(objectMetadata.getObject(), new Byte(propertiesId));
+				break;
 			}
 		} else if (objectMetadata.getProperties().get(idFieldValue.toString()) != null) {
 			throw new Exception("Duplicate id");
