@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.Properties;
 import java.util.Set;
@@ -15,10 +14,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class Syrup {
 
 	private Class<? extends Object> myClass;
+	private AnnotationDigester annotationDigester;
 	private ObjectMapper objectMapper = new ObjectMapper();
 	private Properties properties = new Properties();
 	private String filepath;
-	private Field idField;
 
 	public Object getById(String id) {
 		Object myReturn = null;
@@ -26,8 +25,11 @@ public class Syrup {
 		try {
 			String value = (String) properties.getProperty(id);
 
-			if (value != null && !value.isEmpty())
+			if (value != null && !value.isEmpty()) {
 				myReturn = objectMapper.readValue(value, myClass);
+
+				annotationDigester.get(new ObjectMetadata(myReturn, properties, null, null));
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -63,39 +65,10 @@ public class Syrup {
 
 	public Boolean save(Object object) {
 		try {
-			String propertiesId = new Integer(properties.keySet().size()).toString();
-			Object value = idField.get(object);
+			ObjectMetadata objectMetadata = new ObjectMetadata(object, properties, null, null);
+			annotationDigester.save(objectMetadata);
 
-			if (value == null) {
-				switch (idField.getType().getSimpleName()) {
-				case "String":
-					idField.set(object, propertiesId);
-					break;
-
-				case "Integer":
-					idField.set(object, new Integer(propertiesId));
-					break;
-
-				case "Long":
-					idField.set(object, new Long(propertiesId));
-					break;
-
-				case "Double":
-					idField.set(object, new Double(propertiesId));
-					break;
-
-				case "Float":
-					idField.set(object, new Float(propertiesId));
-					break;
-				}
-			} else if (properties.get(value.toString()) != null) {
-				throw new Exception("Duplicate id");
-			} else {
-				propertiesId = value.toString();
-			}
-
-			properties.put(propertiesId, objectMapper.writeValueAsString(object));
-
+			properties.put(objectMetadata.getId(), objectMapper.writeValueAsString(object));
 			saveProperties();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -107,13 +80,10 @@ public class Syrup {
 
 	public Boolean update(Object object) {
 		try {
-			Object value = idField.get(object);
+			ObjectMetadata objectMetadata = new ObjectMetadata(object, properties, null, null);
+			annotationDigester.update(objectMetadata);
 
-			if (properties.get(value.toString()) == null)
-				throw new Exception("Id does not exist");
-
-			properties.put(value.toString(), objectMapper.writeValueAsString(object));
-
+			properties.put(objectMetadata.getId(), objectMapper.writeValueAsString(object));
 			saveProperties();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -136,26 +106,6 @@ public class Syrup {
 		return true;
 	}
 
-	private Field findAnnotation(Class<? extends Annotation> needle) {
-		Field myField = null;
-
-		try {
-			for (Field thisField : myClass.getDeclaredFields())
-				if (thisField.isAnnotationPresent(needle)) {
-					myField = thisField;
-					break;
-				}
-
-			if (myField == null)
-				throw new Exception("@Id field is missing");
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-
-		return myField;
-	}
-
 	private void loadProperties() throws Exception {
 		InputStream inputStream = new FileInputStream(filepath);
 
@@ -175,7 +125,7 @@ public class Syrup {
 	 * @param directory
 	 * @throws Exception
 	 */
-	public Syrup(Class<? extends Object> myClass, String directory) throws Exception {
+	protected Syrup(Class<? extends Object> myClass, String directory) throws Exception {
 		this.myClass = myClass;
 		filepath = directory + myClass.getName();
 
@@ -189,8 +139,6 @@ public class Syrup {
 			throw new Exception("Unable to create file");
 
 		loadProperties();
-
-		idField = findAnnotation(javax.persistence.Id.class);
-		idField.setAccessible(true);
+		annotationDigester = new AnnotationDigester(myClass);
 	}
 }
