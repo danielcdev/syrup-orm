@@ -10,6 +10,7 @@ import com.danielcotter.syrup.test.model.ByteModel;
 import com.danielcotter.syrup.test.model.DoubleModel;
 import com.danielcotter.syrup.test.model.FloatModel;
 import com.danielcotter.syrup.test.model.LongModel;
+import com.danielcotter.syrup.test.model.StringModel;
 
 public class IdTest {
 
@@ -19,6 +20,7 @@ public class IdTest {
 	private FloatModel floatModel = new FloatModel(14.3f);
 	private BooleanModel booleanModel = new BooleanModel(true);
 	private ByteModel byteModel = new ByteModel((byte) 0x64);
+	private StringModel stringModel = new StringModel("abc");
 
 	@BeforeClass
 	public static void beforeTests() {
@@ -29,6 +31,7 @@ public class IdTest {
 		factory.resetSyrup(FloatModel.class);
 		factory.resetSyrup(BooleanModel.class);
 		factory.resetSyrup(ByteModel.class);
+		factory.resetSyrup(StringModel.class);
 	}
 
 	@Test
@@ -70,5 +73,13 @@ public class IdTest {
 		ByteModel persistedByteModel = (ByteModel) factory.getSyrup(ByteModel.class)
 				.getById(new Byte((byte) 0x64).toString());
 		Assert.assertEquals(byteModel, persistedByteModel);
+	}
+
+	@Test
+	public void stringModel() {
+		Assert.assertEquals(true, factory.getSyrup(StringModel.class).save(stringModel));
+
+		StringModel persistedStringModel = (StringModel) factory.getSyrup(StringModel.class).getById("abc");
+		Assert.assertEquals(stringModel, persistedStringModel);
 	}
 }
