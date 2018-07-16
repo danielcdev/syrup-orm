@@ -1,8 +1,5 @@
 package org.syruporm.core;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
@@ -14,10 +11,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class Syrup {
 
 	private Class<? extends Object> myClass;
+	private PersistenceHandler persistenceHandler;
 	private AnnotationDigester annotationDigester;
 	private ObjectMapper objectMapper = new ObjectMapper();
 	private Properties properties = new Properties();
-	private String filepath;
 
 	public Object getById(String id) {
 		Object myReturn = null;
@@ -109,27 +106,24 @@ public class Syrup {
 	}
 
 	protected Boolean deleteFile() {
-		try {
-			File file = new File(filepath);
-
-			if (file.exists())
-				return file.delete();
-		} catch (Exception e) {
-			return false;
-		}
-
-		return true;
+		return persistenceHandler.delete(myClass);
 	}
 
 	private void loadProperties() throws Exception {
-		InputStream inputStream = new FileInputStream(filepath);
+		InputStream inputStream = persistenceHandler.load(myClass);
+
+		if (inputStream == null)
+			throw new Exception("InputStream for " + myClass.getName() + " is null");
 
 		properties.load(inputStream);
 		inputStream.close();
 	}
 
 	private void saveProperties() throws Exception {
-		OutputStream outputStream = new FileOutputStream(filepath);
+		OutputStream outputStream = persistenceHandler.save(myClass);
+
+		if (outputStream == null)
+			throw new Exception("OutputStream for " + myClass.getName() + " is null");
 
 		properties.store(outputStream, "syrup-orm");
 		outputStream.close();
@@ -137,21 +131,12 @@ public class Syrup {
 
 	/**
 	 * @param myClass
-	 * @param directory
+	 * @param persistenceHandler
 	 * @throws Exception
 	 */
-	protected Syrup(Class<? extends Object> myClass, String directory) throws Exception {
+	protected Syrup(Class<? extends Object> myClass, PersistenceHandler persistenceHandler) throws Exception {
 		this.myClass = myClass;
-		filepath = directory + myClass.getName();
-
-		File directories = new File(directory);
-		File file = new File(filepath);
-
-		if (!directories.exists() && !directories.mkdirs())
-			throw new Exception("Unable to create directory");
-
-		if (!file.exists() && !file.createNewFile())
-			throw new Exception("Unable to create file");
+		this.persistenceHandler = persistenceHandler;
 
 		loadProperties();
 		annotationDigester = new AnnotationDigester(myClass);

@@ -1,18 +1,19 @@
 package org.syruporm.core;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.syruporm.persistencehandler.LocalFileHandler;
 
 public class SyrupFactory {
 
 	private Map<Class<? extends Object>, Syrup> pantry = new HashMap<>();
-	private String directory = null;
+	private PersistenceHandler persistenceHandler = new LocalFileHandler();
 
 	public Syrup getSyrup(Class<? extends Object> thisClass) {
 		try {
 			if (!pantry.containsKey(thisClass))
-				pantry.put(thisClass, new Syrup(thisClass, directory));
+				pantry.put(thisClass, new Syrup(thisClass, persistenceHandler));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -26,7 +27,7 @@ public class SyrupFactory {
 			Syrup thisSyrup = getSyrup(thisClass);
 
 			thisSyrup.deleteFile();
-			pantry.put(thisClass, new Syrup(thisClass, directory));
+			pantry.put(thisClass, new Syrup(thisClass, persistenceHandler));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
@@ -36,39 +37,28 @@ public class SyrupFactory {
 	}
 
 	public SyrupFactory() {
-		String tomcat = System.getProperty("catalina.base");
-		String jetty = System.getProperty("jetty.base");
 
-		if (tomcat != null)
-			directory = tomcat + File.separator + ".syrup" + File.separator;
-
-		if (jetty != null)
-			directory = tomcat + File.separator + ".syrup" + File.separator;
-
-		if (directory == null)
-			directory = System.getProperty("user.home") + File.separator + ".syrup" + File.separator;
 	}
 
 	/**
-	 * @param directory
+	 * @param persistenceHandler
 	 */
-	public SyrupFactory(String directory) {
-		this.directory = (directory.substring(directory.length() - 1, directory.length()).equals(File.separator))
-				? directory : directory + File.separator;
+	public SyrupFactory(PersistenceHandler persistenceHandler) {
+		this.persistenceHandler = persistenceHandler;
 	}
 
 	/**
-	 * @return the directory
+	 * @return the persistenceHandler
 	 */
-	public String getDirectory() {
-		return directory;
+	public PersistenceHandler getPersistenceHandler() {
+		return persistenceHandler;
 	}
 
 	/**
-	 * @param directory
-	 *            the directory to set
+	 * @param persistenceHandler
+	 *            the persistenceHandler to set
 	 */
-	public void setDirectory(String directory) {
-		this.directory = directory;
+	public void setPersistenceHandler(PersistenceHandler persistenceHandler) {
+		this.persistenceHandler = persistenceHandler;
 	}
 }
