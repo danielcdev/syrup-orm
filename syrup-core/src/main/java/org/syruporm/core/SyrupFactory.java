@@ -47,6 +47,12 @@ public class SyrupFactory {
 		this.persistenceHandler = persistenceHandler;
 	}
 
+	public SyrupFactory withPersistenceHandler(PersistenceHandler persistenceHandler) {
+		this.persistenceHandler = persistenceHandler;
+
+		return this;
+	}
+
 	/**
 	 * @return the persistenceHandler
 	 */

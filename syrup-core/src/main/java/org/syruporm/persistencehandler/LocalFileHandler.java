@@ -84,6 +84,12 @@ public class LocalFileHandler implements PersistenceHandler {
 			directory = System.getProperty("user.home") + File.separator + ".syrup" + File.separator;
 	}
 
+	public LocalFileHandler withBaseDirectory(String directory) {
+		this.directory = fixDirectory(directory);
+
+		return this;
+	}
+
 	/**
 	 * @return the directory
 	 */
