@@ -32,3 +32,10 @@ project(':syrup-core') {
 		compile('javax.persistence:javax.persistence-api:2.2')
 	}
 }
+
+project(':syrup-s3-persistence') {
+	dependencies {
+		compile project(':syrup-core')
+		compile('com.amazonaws:aws-java-sdk-s3:1.11.390')
+	}
+}
