@@ -8,6 +8,22 @@ import java.util.Set;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * Persists an object using Jackson and Properties
+ * 
+ * <p>
+ * Marshals an object to JSON using Jackson, digests the annotations to act
+ * accordingly in the implementation of the AnnotationHandlers, then stores it
+ * in a persistent (or not) medium according to the implementation of the
+ * PersistenceHandler
+ * </p>
+ * 
+ * <p>
+ * Retrieval is the exact reversal of storage
+ * </p>
+ * 
+ * @since 0.1.0
+ */
 public class Syrup {
 
 	private Class<? extends Object> myClass;
@@ -16,6 +32,15 @@ public class Syrup {
 	private ObjectMapper objectMapper = new ObjectMapper();
 	private Properties properties = new Properties();
 
+	/**
+	 * Finds the specific object by the provided id, relative to the Properties
+	 * id
+	 * 
+	 * @param id
+	 *            Specific Properties id of the object wished to be retrieved
+	 * @return The requested object, or null if not found
+	 * @since 0.1.0
+	 */
 	public Object getById(String id) {
 		Object myReturn = null;
 
@@ -35,6 +60,18 @@ public class Syrup {
 		return myReturn;
 	}
 
+	/**
+	 * Finds the specific object by the name of a field within the class, found
+	 * by the provided comparator
+	 * 
+	 * @param fieldName
+	 *            The name of the field in the class to be searched
+	 * @param comparator
+	 *            The object of which to compare the value of the specified
+	 *            field
+	 * @return The requested object, or null if not found
+	 * @since 0.1.0
+	 */
 	public Object getByField(String fieldName, Object comparator) {
 		Object myReturn = null;
 
@@ -60,6 +97,21 @@ public class Syrup {
 		return myReturn;
 	}
 
+	/**
+	 * Modifies the object according to the AnnotationHandlers, then persists
+	 * the object according to the PersistenceHandler
+	 * 
+	 * <p>
+	 * Only saves new objects
+	 * </p>
+	 * 
+	 * @param object
+	 *            The object to be modified and persisted
+	 * @return True or false relative to the success of the operation
+	 * @see AnnotationHandler
+	 * @see PersistenceHandler
+	 * @since 0.1.0
+	 */
 	public Boolean save(Object object) {
 		try {
 			ObjectMetadata objectMetadata = new ObjectMetadata(object, properties, null, null);
@@ -75,6 +127,21 @@ public class Syrup {
 		return true;
 	}
 
+	/**
+	 * Modifies the object according to the AnnotationHandlers, then persists
+	 * the object according to the PersistenceHandler
+	 * 
+	 * <p>
+	 * Updates existing objects only
+	 * </p>
+	 * 
+	 * @param object
+	 *            The object to be modified and persisted
+	 * @return True or false relative to the success of the operation
+	 * @see AnnotationHandler
+	 * @see PersistenceHandler
+	 * @since 0.1.0
+	 */
 	public Boolean update(Object object) {
 		try {
 			ObjectMetadata objectMetadata = new ObjectMetadata(object, properties, null, null);
@@ -90,6 +157,17 @@ public class Syrup {
 		return true;
 	}
 
+	/**
+	 * Modifies the object according to the AnnotationHandlers, then deletes the
+	 * persisted object according to the PersistenceHandler
+	 * 
+	 * @param object
+	 *            The object to be modified and deleted
+	 * @return True or false relative to the success of the operation
+	 * @see AnnotationHandler
+	 * @see PersistenceHandler
+	 * @since 0.2.0
+	 */
 	public Boolean delete(Object object) {
 		try {
 			ObjectMetadata objectMetadata = new ObjectMetadata(object, properties, null, null);
@@ -105,6 +183,14 @@ public class Syrup {
 		return true;
 	}
 
+	/**
+	 * Destroys the persistence medium relative to Syrup class as dictated by
+	 * the PersistenceHandler
+	 * 
+	 * @return True or false relative to the success of the operation
+	 * @see PersistenceHandler
+	 * @since 0.1.0
+	 */
 	protected Boolean deleteFile() {
 		return persistenceHandler.delete(myClass);
 	}
@@ -130,9 +216,16 @@ public class Syrup {
 	}
 
 	/**
+	 * Provides an instance of Syrup to handle the provided class to persist in
+	 * a manner dictated by the PersistenceHandler
+	 * 
 	 * @param myClass
+	 *            The class to be persisted
 	 * @param persistenceHandler
+	 *            PersistenceHandler to dictate method of persistence
 	 * @throws Exception
+	 * @see PersistenceHandler
+	 * @since 0.1.0
 	 */
 	protected Syrup(Class<? extends Object> myClass, PersistenceHandler persistenceHandler) throws Exception {
 		this.myClass = myClass;

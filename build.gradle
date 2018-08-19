@@ -19,6 +19,11 @@ subprojects {
 		sourceCompatibility = 1.8
 		targetCompatibility = 1.8
 	}
+
+	javadoc {
+		source = sourceSets.main.allJava
+		classpath = configurations.compile
+	}
 }
 
 project(':syrup-core') {

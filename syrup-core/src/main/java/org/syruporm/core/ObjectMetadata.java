@@ -6,6 +6,12 @@ package org.syruporm.core;
 import java.lang.reflect.Field;
 import java.util.Properties;
 
+/**
+ * Holds various meta data of objects to be parsed and acted upon by annotation
+ * handlers
+ * 
+ * @since 0.2.0
+ */
 public class ObjectMetadata {
 
 	private Object object;
@@ -38,8 +44,7 @@ public class ObjectMetadata {
 	}
 
 	/**
-	 * @param object
-	 *            the object to set
+	 * @param object the object to set
 	 */
 	public void setObject(Object object) {
 		this.object = object;
@@ -53,8 +58,7 @@ public class ObjectMetadata {
 	}
 
 	/**
-	 * @param properties
-	 *            the properties to set
+	 * @param properties the properties to set
 	 */
 	public void setProperties(Properties properties) {
 		this.properties = properties;
@@ -68,8 +72,7 @@ public class ObjectMetadata {
 	}
 
 	/**
-	 * @param field
-	 *            the field to set
+	 * @param field the field to set
 	 */
 	public void setField(Field field) {
 		this.field = field;
@@ -83,8 +86,7 @@ public class ObjectMetadata {
 	}
 
 	/**
-	 * @param id
-	 *            the id to set
+	 * @param id the id to set
 	 */
 	public void setId(String id) {
 		this.id = id;
