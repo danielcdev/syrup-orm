@@ -1,15 +1,14 @@
-package com.danielcotter.syrup.test;
+package org.syruporm.core.test;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import com.danielcotter.syrup.SyrupFactory;
-import com.danielcotter.syrup.test.model.ByteModel;
-import com.danielcotter.syrup.test.model.DoubleModel;
-import com.danielcotter.syrup.test.model.FloatModel;
-import com.danielcotter.syrup.test.model.LongModel;
-import com.danielcotter.syrup.test.model.StringModel;
+import org.syruporm.core.SyrupFactory;
+import org.syruporm.core.test.model.ByteModel;
+import org.syruporm.core.test.model.DoubleModel;
+import org.syruporm.core.test.model.FloatModel;
+import org.syruporm.core.test.model.LongModel;
+import org.syruporm.core.test.model.StringModel;
 
 public class IdGenerationTest {
 

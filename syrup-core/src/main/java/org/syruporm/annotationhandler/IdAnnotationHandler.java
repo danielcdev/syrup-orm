@@ -1,7 +1,7 @@
-package com.danielcotter.syrup.annotationhandler;
+package org.syruporm.annotationhandler;
 
-import com.danielcotter.syrup.AnnotationHandler;
-import com.danielcotter.syrup.ObjectMetadata;
+import org.syruporm.core.AnnotationHandler;
+import org.syruporm.core.ObjectMetadata;
 
 public class IdAnnotationHandler implements AnnotationHandler {
 

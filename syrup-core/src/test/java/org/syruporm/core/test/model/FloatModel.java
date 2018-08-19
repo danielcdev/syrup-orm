@@ -1,27 +1,27 @@
-package com.danielcotter.syrup.test.model;
+package org.syruporm.core.test.model;
 
 import javax.persistence.Id;
 
-public class DoubleModel {
+public class FloatModel {
 
 	@Id
-	private Double id;
+	private Float id;
 
-	public DoubleModel() {
+	public FloatModel() {
 
 	}
 
 	/**
 	 * @param id
 	 */
-	public DoubleModel(Double id) {
+	public FloatModel(Float id) {
 		this.id = id;
 	}
 
 	/**
 	 * @return the id
 	 */
-	public Double getId() {
+	public Float getId() {
 		return id;
 	}
 
@@ -29,7 +29,7 @@ public class DoubleModel {
 	 * @param id
 	 *            the id to set
 	 */
-	public void setId(Double id) {
+	public void setId(Float id) {
 		this.id = id;
 	}
 
@@ -57,9 +57,9 @@ public class DoubleModel {
 			return true;
 		if (obj == null)
 			return false;
-		if (!(obj instanceof DoubleModel))
+		if (!(obj instanceof FloatModel))
 			return false;
-		DoubleModel other = (DoubleModel) obj;
+		FloatModel other = (FloatModel) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -75,6 +75,6 @@ public class DoubleModel {
 	 */
 	@Override
 	public String toString() {
-		return "DoubleModel [id=" + id + "]";
+		return "FloatModel [id=" + id + "]";
 	}
 }

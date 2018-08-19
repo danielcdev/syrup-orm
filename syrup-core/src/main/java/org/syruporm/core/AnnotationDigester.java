@@ -1,4 +1,4 @@
-package com.danielcotter.syrup;
+package org.syruporm.core;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;

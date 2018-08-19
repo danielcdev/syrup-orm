@@ -1,27 +1,27 @@
-package com.danielcotter.syrup.test.model;
+package org.syruporm.core.test.model;
 
 import javax.persistence.Id;
 
-public class BooleanModel {
+public class LongModel {
 
 	@Id
-	private Boolean id;
+	private Long id;
 
-	public BooleanModel() {
+	public LongModel() {
 
 	}
 
 	/**
 	 * @param id
 	 */
-	public BooleanModel(Boolean id) {
+	public LongModel(Long id) {
 		this.id = id;
 	}
 
 	/**
 	 * @return the id
 	 */
-	public Boolean getId() {
+	public Long getId() {
 		return id;
 	}
 
@@ -29,7 +29,7 @@ public class BooleanModel {
 	 * @param id
 	 *            the id to set
 	 */
-	public void setId(Boolean id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -57,9 +57,9 @@ public class BooleanModel {
 			return true;
 		if (obj == null)
 			return false;
-		if (!(obj instanceof BooleanModel))
+		if (!(obj instanceof LongModel))
 			return false;
-		BooleanModel other = (BooleanModel) obj;
+		LongModel other = (LongModel) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -75,6 +75,6 @@ public class BooleanModel {
 	 */
 	@Override
 	public String toString() {
-		return "BooleanModel [id=" + id + "]";
+		return "LongModel [id=" + id + "]";
 	}
 }
