@@ -2,3 +2,4 @@ rootProject.name = 'syrup-orm'
 
 include 'syrup-core'
 include 'syrup-s3-persistence'
+include 'syrup-encrypted-persistence'

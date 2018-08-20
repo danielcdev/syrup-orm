@@ -39,3 +39,9 @@ project(':syrup-s3-persistence') {
 		compile('com.amazonaws:aws-java-sdk-s3:1.11.390')
 	}
 }
+
+project(':syrup-encrypted-persistence') {
+	dependencies {
+		compile project(':syrup-core')
+	}
+}
